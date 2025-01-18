@@ -37,34 +37,34 @@ connect_layers(hidden_layer_1, hidden_layer_2)
 # Connect second hidden layer to output layer
 connect_layers(hidden_layer_2, output_nodes)
 
-# Define positions for nodes
+# Define positions for nodes with reduced horizontal spacing
 pos = {}
 
-# Manually define positions for input nodes with increased spacing
-pos["I$_1$"] = (0, 1.0)  # Place I_1
-pos["I$_2$"] = (0, 0.7)  # Place I_2
-pos["I$_{719}$"] = (0, 0.2)  # Add a gap below I_2
-pos["I$_{720}$"] = (0, -0.1)  # Place I_720 slightly below I_719
+# Manually define positions for input nodes (reduce horizontal spacing even more)
+pos["I$_1$"] = (0, 1.0)
+pos["I$_2$"] = (0, 0.7)
+pos["I$_{719}$"] = (0, 0.2)
+pos["I$_{720}$"] = (0, -0.1)
 
-# Manually define positions for the first hidden layer with the required constraints
-pos["H$_{1,1}$"] = (5, 1.2)  # H1,1 is higher than I1
-pos["H$_{1,2}$"] = (5, 0.9)  # H1,2 below H1,1
-pos["H$_{1,62}$"] = (5, 0.1)  # H1,62 below H1,2 with a large gap
-pos["H$_{1,63}$"] = (5, -0.2)  # H1,63 below H1,62 with a small gap
+# Redefine positions for the first hidden layer (further reduce horizontal spacing)
+pos["H$_{1,1}$"] = (0.5, 1.2)
+pos["H$_{1,2}$"] = (0.5, 0.9)
+pos["H$_{1,62}$"] = (0.5, 0.1)
+pos["H$_{1,63}$"] = (0.5, -0.2)
 
-# Manually define positions for the second hidden layer with the required constraints
-pos["H$_{2,1}$"] = (10, 1.2)  # H2,1 is higher than H2,2
-pos["H$_{2,2}$"] = (10, 0.9)  # H2,2 below H2,1
-pos["H$_{2,31}$"] = (10, 0.1)  # H2,31 below H2,2 with a large gap
-pos["H$_{2,32}$"] = (10, -0.2)  # H2,32 below H2,31 with a small gap
+# Redefine positions for the second hidden layer (further reduce horizontal spacing)
+pos["H$_{2,1}$"] = (1, 1.2)
+pos["H$_{2,2}$"] = (1, 0.9)
+pos["H$_{2,31}$"] = (1, 0.1)
+pos["H$_{2,32}$"] = (1, -0.2)
 
-# Manually define positions for the output layer with adjusted vertical positions
-pos["O$_1$"] = (15, 1.0)  # Adjust O1 to not align with other layers
-pos["O$_2$"] = (15, 0.7)  # Adjust O2 below O1
-pos["O$_{59}$"] = (15, 0.2)  # Adjust O59 below O2 with a gap
-pos["O$_{60}$"] = (15, -0.1)  # Adjust O60 below O59 with a small gap
+# Redefine positions for the output layer (further reduce horizontal spacing)
+pos["O$_1$"] = (1.5, 1.0)
+pos["O$_2$"] = (1.5, 0.7)
+pos["O$_{59}$"] = (1.5, 0.2)
+pos["O$_{60}$"] = (1.5, -0.1)
 
-# Function to arrange nodes vertically with x-offset and spacers
+# Function to arrange nodes vertically with x-offset and spacers (again for final adjustments)
 def set_layer_positions(nodes, x_offset, start_y=1.0, spacing=0.3):
     y = start_y
     for node in nodes:
@@ -72,11 +72,23 @@ def set_layer_positions(nodes, x_offset, start_y=1.0, spacing=0.3):
             pos[node] = (x_offset, y)
             y -= spacing
 
-# Set positions for output layer independently
-set_layer_positions(output_nodes, x_offset=15, start_y=0.8, spacing=0.3)  # Output layer
+# Apply the final position settings
+set_layer_positions(output_nodes, x_offset=3, start_y=0.8, spacing=0.3)
 
-# Adjust figure size and layout
-plt.figure(figsize=(10, 5))  # Adjust the figure size
+
+state_l = 0.9
+state_h = 3
+
+m_left = 0.18
+m_right = 0.98
+m_bottom = 0.17
+m_top = 0.99
+
+plt_h = 2.5
+plt_w = 3.5
+# Replot the graph with even more reduced horizontal spacing
+fig = plt.figure(figsize=(plt_w,plt_h))
+ax2 = fig.add_subplot(1, 1, 1 )
 plt.axis("off")  # Turn off axes for better appearance
 
 # Draw the graph
@@ -90,12 +102,14 @@ nx.draw(
         "lightcoral"
         for node in G.nodes
     ],
-    node_size=3000,
-    font_size=10,
+    node_size=500,
+    font_size=8,
     edge_color="gray"
 )
 
 # Manually adjust plot limits to enforce proper spacing
 plt.ylim(-0.5, 1.5)  # Adjust vertical limits for better spacing
-plt.tight_layout()
+#plt.tight_layout()
+plt.subplots_adjust(left=m_left, right=m_right, top=m_top, bottom=m_bottom, wspace=0.00, hspace= 0.0 )
+plt.savefig( 'first_NN.png', dpi = 600, transparent = True )
 plt.show()
